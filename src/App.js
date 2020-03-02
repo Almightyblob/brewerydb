@@ -1,36 +1,51 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-// import axios from "axios";
 import Searchbar from "./components/Searchbar";
-import BreweryContainer from "./components/BreweryContainer";
+import BreweryList from "./components/BreweryList";
 import BreweryDetail from "./components/BreweryDetail";
+import BeerDetail from "./components/BeerDetail";
+import BeerList from "./components/BeerList";
 import Home from "./components/Home";
-import "./App.css";
 
 const App = props => {
   const [countrycode, setCountrycode] = useState();
+  const [beers, setBeers] = useState();
 
   const updateCountrycode = countrycode => {
     setCountrycode(countrycode);
     console.log("APP:", countrycode);
   };
 
+  const updateBeers = beers => {
+    setBeers(beers);
+    console.log("APP:", beers);
+  };
+
   return (
     <Router>
       <div className="App">
-        <Searchbar updateCountrycode={updateCountrycode} />
+        <Searchbar
+          updateCountrycode={updateCountrycode}
+          updateBeers={updateBeers}
+        />
         <Switch>
           <Route exact path="/" component={Home} />
           <Route
             exact
             path="/breweries/"
-            component={() => <BreweryContainer countrycode={countrycode} />}
+            component={() => <BreweryList countrycode={countrycode} />}
+          />
+          <Route
+            exact
+            path="/beers/"
+            component={() => <BeerList beers={beers} />}
           />
           <Route
             exact
             path="/breweries/brewery/:id"
             component={BreweryDetail}
           />
+          <Route exact path="/beer/:id" component={BeerDetail} />
         </Switch>
       </div>
     </Router>

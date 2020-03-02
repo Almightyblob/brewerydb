@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 
 const BreweryDetail = props => {
+  const history = useHistory();
   useEffect(() => {
     fetchItems();
   }, []);
@@ -23,16 +25,50 @@ const BreweryDetail = props => {
     console.log(beersData.data);
     setBeers(beersData.data);
   };
-  return (
-    <div>
-      <h1>{brewery && brewery ? brewery.name : "LOADING"}</h1>
-      {beers ? (
-        beers.map(beer => <p>{beer.name}</p>)
-      ) : (
-        <p>loading list of beers</p>
-      )}
-    </div>
-  );
+
+  if (brewery && brewery) {
+    return (
+      <div className="contentcontainer">
+        <h1 className="title">{brewery.name}</h1>
+        <p className="established">established: {brewery.established}</p>
+
+        <a
+          className="brewery-url"
+          href={brewery.website}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <p>{brewery.website}</p>
+        </a>
+        <div className="imgcontainer">
+          <img src={brewery.images.medium} alt="logo" />
+        </div>
+        <p>{brewery.description}</p>
+        <h3>List of Beers</h3>
+        <div className="beerList">
+          {beers ? (
+            beers.map(beer => (
+              <div
+                className="beercard"
+                key={beer.id}
+                onClick={() => history.push(`/beer/${beer.id}`)}
+              >
+                <p>{beer.name}</p>
+              </div>
+            ))
+          ) : (
+            <p>loading list of beers</p>
+          )}
+        </div>
+      </div>
+    );
+  } else {
+    return (
+      <div className="spinnercontainer">
+        <img src="/spinner.gif" alt="" />
+      </div>
+    );
+  }
 };
 
 export default BreweryDetail;
