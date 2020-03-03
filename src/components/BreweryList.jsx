@@ -9,7 +9,6 @@ const BreweryList = props => {
 
   useEffect(() => {
     async function fetchData() {
-      // You can await here
       let response = await axios.get(
         `http://localhost:3000/locations/?countryIsoCode=${props.countrycode}&order=breweryName&key=659d5c6b8f3d2447f090119e48202fdb`
       );
@@ -20,7 +19,6 @@ const BreweryList = props => {
       }
       setBreweries(unique);
       console.log(unique);
-      // ...
     }
     fetchData();
   }, []);

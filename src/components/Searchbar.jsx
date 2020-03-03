@@ -7,7 +7,6 @@ let allBeers = [];
 
 const SearchBar = props => {
   const [locations, setLocations] = useState([]);
-  const [breweryNameSearchTerm, setBreweryNameSearchTerm] = useState("");
   const [beerNameSearchTerm, setBeerNameSearchTerm] = useState("");
   const [beerTypeSearchTerm, setBeerTypeSearchTerm] = useState("");
   let [pageCount, setPageCount] = useState(0);
@@ -17,7 +16,6 @@ const SearchBar = props => {
     fetchItems();
   }, []);
 
-  //   const [state, setState] = useState([]);
   const fetchItems = async () => {
     const response = await axios.get(
       "http://localhost:3000/locations/?key=659d5c6b8f3d2447f090119e48202fdb"
@@ -48,7 +46,7 @@ const SearchBar = props => {
     setPageCount(pageCount++);
   };
 
-  // populate allBeer array once all data is loaded
+  // populate allBeers array once all data is loaded
   if (
     allBeers.length > 0 &&
     allBeers.length === allBeers[0].numberOfPages &&
@@ -59,14 +57,6 @@ const SearchBar = props => {
     allBeers = _.flatten(unwoundData);
     props.updateBeers(allBeers);
   }
-
-  const breweryNameSearch = async () => {
-    let breweryResponse = await axios.get(
-      `http://localhost:3000/breweries/?name=${breweryNameSearchTerm}&key=659d5c6b8f3d2447f090119e48202fdb`
-    );
-    props.breweryNameSearch(breweryResponse.data);
-    history.push(`/breweries/`);
-  };
 
   const breweryLocationHandler = async event => {
     let countrycode = event.target.value;
@@ -136,7 +126,6 @@ const SearchBar = props => {
                 name="countries"
                 id="countries"
                 onChange={breweryLocationHandler}
-                value={breweryNameSearchTerm}
               >
                 <option value=""> </option>
                 {locations.map(country => (

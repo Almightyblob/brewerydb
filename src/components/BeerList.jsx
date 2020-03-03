@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
-// const _ = require("lodash");
-
 const BeerList = props => {
   const history = useHistory();
   const [beers = props.beers, setBeers] = useState();
