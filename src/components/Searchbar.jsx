@@ -7,10 +7,11 @@ let allBeers = [];
 
 const SearchBar = props => {
   const [locations, setLocations] = useState([]);
-  const [beerSearchTerm, setBeerSearchTerm] = useState("");
+  const [breweryNameSearchTerm, setBreweryNameSearchTerm] = useState("");
+  const [beerNameSearchTerm, setBeerNameSearchTerm] = useState("");
+  const [beerTypeSearchTerm, setBeerTypeSearchTerm] = useState("");
   let [pageCount, setPageCount] = useState(0);
   const [beerPages, setBeerPages] = useState([]);
-  const [beers, setBeers] = useState([]);
   const history = useHistory();
   useEffect(() => {
     fetchItems();
@@ -27,7 +28,7 @@ const SearchBar = props => {
     ];
     setLocations(unique);
 
-    //   Collect all beers
+    //   Collect all beers from API
     const firstBeerResponse = await axios.get(
       "http://localhost:3000/beers/?withBreweries=Y&key=659d5c6b8f3d2447f090119e48202fdb"
     );
@@ -38,6 +39,7 @@ const SearchBar = props => {
       await setTimeout(getBeers(i), 150);
     }
   };
+
   const getBeers = async page => {
     let beerResponse = await axios.get(
       `http://localhost:3000/beers/?withBreweries=Y&p=${page}&key=659d5c6b8f3d2447f090119e48202fdb`
@@ -46,7 +48,7 @@ const SearchBar = props => {
     setPageCount(pageCount++);
   };
 
-  /// set beer state once all data is loaded
+  // populate allBeer array once all data is loaded
   if (
     allBeers.length > 0 &&
     allBeers.length === allBeers[0].numberOfPages &&
@@ -58,16 +60,36 @@ const SearchBar = props => {
     props.updateBeers(allBeers);
   }
 
+  const breweryNameSearch = async () => {
+    let breweryResponse = await axios.get(
+      `http://localhost:3000/breweries/?name=${breweryNameSearchTerm}&key=659d5c6b8f3d2447f090119e48202fdb`
+    );
+    props.breweryNameSearch(breweryResponse.data);
+    history.push(`/breweries/`);
+  };
+
   const breweryLocationHandler = async event => {
     let countrycode = event.target.value;
     props.updateCountrycode(countrycode);
     history.push(`/breweries/`);
   };
 
-  const updateBeerHandler = async () => {
+  const beerNameSearch = async () => {
     let searchResult = allBeers.filter(beer =>
-      beer.name.toLowerCase().includes(beerSearchTerm.toLowerCase())
+      beer.name.toLowerCase().includes(beerNameSearchTerm.toLowerCase())
     );
+    props.updateBeers(searchResult);
+    history.push("/beers/");
+  };
+
+  const beerTypeSearch = async () => {
+    let searchResult = allBeers.filter(beer => {
+      if (beer.style) {
+        return beer.style.name
+          .toLowerCase()
+          .includes(beerTypeSearchTerm.toLowerCase());
+      }
+    });
     props.updateBeers(searchResult);
     history.push("/beers/");
   };
@@ -77,13 +99,21 @@ const SearchBar = props => {
       beer.breweries[0].locations[0].countryIsoCode.includes(event.target.value)
     );
     props.updateBeers(searchResult);
-    console.log("search result ", beerSearchTerm, searchResult);
     history.push("/beers/");
   };
 
-  const beerSearchHandler = async event => {
-    setBeerSearchTerm(event.target.value);
-    console.log(beerSearchTerm);
+  const beerNameInputHandler = async event => {
+    setBeerNameSearchTerm(event.target.value);
+  };
+
+  const beerTypeInputHandler = async event => {
+    setBeerTypeSearchTerm(event.target.value);
+  };
+
+  const clearBeerSearch = () => {
+    setBeerNameSearchTerm("");
+    setBeerTypeSearchTerm("");
+    props.updateBeers(allBeers);
   };
 
   return (
@@ -97,36 +127,73 @@ const SearchBar = props => {
           </p>
         </div>
       ) : (
-        <div>
-          <label htmlFor="countries">Display Breweries by country</label>
-          <select
-            name="countries"
-            id="countries"
-            onChange={breweryLocationHandler}
-          >
-            <option value=""> </option>
-            {locations.map(country => (
-              <option key={country} value={country}>
-                {country}
-              </option>
-            ))}
-          </select>
-          <label htmlFor="countries">Find beer by name</label>
-          <input type="text" onChange={beerSearchHandler} />
-          <button onClick={updateBeerHandler}>Get Beer Data</button>
-          <label htmlFor="countries">Display Beers by country</label>
-          <select
-            name="countries"
-            id="countries"
-            onChange={beerLocationHandler}
-          >
-            <option value=""> </option>
-            {locations.map(country => (
-              <option key={country} value={country}>
-                {country}
-              </option>
-            ))}
-          </select>
+        <div className="searchelements">
+          <div className="dropdown brewerysearch">
+            <button className="dropbutton">Search Breweries</button>
+            <div className="dropdowncontent">
+              <label htmlFor="countries">Display Breweries by country</label>
+              <select
+                name="countries"
+                id="countries"
+                onChange={breweryLocationHandler}
+                value={breweryNameSearchTerm}
+              >
+                <option value=""> </option>
+                {locations.map(country => (
+                  <option key={country} value={country}>
+                    {country}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div className="dropdown beersearch">
+            <button className="dropbutton">Search Beers</button>
+            <div className="dropdowncontent">
+              <div className="searchelement">
+                <label htmlFor="beername">Find beer by name</label>
+                <input
+                  type="text"
+                  name="beername"
+                  onChange={beerNameInputHandler}
+                  value={beerNameSearchTerm}
+                />
+                <button className="searchbutton" onClick={beerNameSearch}>
+                  Search Name
+                </button>
+              </div>
+              <div className="searchelement">
+                <label htmlFor="beertype">Find beer by type</label>
+                <input
+                  type="text"
+                  name="beertype"
+                  onChange={beerTypeInputHandler}
+                  value={beerTypeSearchTerm}
+                />
+                <button className="searchbutton" onClick={beerTypeSearch}>
+                  Search Type
+                </button>
+              </div>
+              <div className="searchelement">
+                <label htmlFor="countries">Display Beers by country</label>
+                <select
+                  name="countries"
+                  id="countries"
+                  onChange={beerLocationHandler}
+                >
+                  <option value=""> </option>
+                  {locations.map(country => (
+                    <option key={country} value={country}>
+                      {country}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <button className="searchbutton" onClick={clearBeerSearch}>
+                Reset Search
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

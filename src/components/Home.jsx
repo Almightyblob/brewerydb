@@ -6,7 +6,7 @@ const Home = props => {
   };
 
   return (
-    <div>
+    <div className="contentcontainer">
       {props.beers && props.beers ? (
         <button onClick={showBeer}>Show Beer</button>
       ) : (

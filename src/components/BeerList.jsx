@@ -12,15 +12,21 @@ const BeerList = props => {
 
   return (
     <div className="contentcontainer">
-      <h1>Beers</h1>
+      <h1 className="title">Beers</h1>
       {beers && Array.isArray(beers) ? (
         beers.map(beer => (
-          <div key={beer.id} onClick={() => history.push(`/beer/${beer.id}`)}>
+          <div
+            className="listitem"
+            key={beer.id}
+            onClick={() => history.push(`/beer/${beer.id}`)}
+          >
             <p>{beer.name}</p>
           </div>
         ))
       ) : (
-        <img src="/spinner.gif" alt="" />
+        <div className="spinnercontainer">
+          <img src="/spinner.gif" alt="" />
+        </div>
       )}
     </div>
   );

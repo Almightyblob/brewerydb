@@ -9,11 +9,17 @@ import Home from "./components/Home";
 
 const App = props => {
   const [countrycode, setCountrycode] = useState();
+  const [breweries, setBreweries] = useState();
   const [beers, setBeers] = useState();
 
   const updateCountrycode = countrycode => {
     setCountrycode(countrycode);
     console.log("APP:", countrycode);
+  };
+
+  const breweryNameSearch = searchResults => {
+    setBreweries(searchResults);
+    console.log("APP:", searchResults);
   };
 
   const updateBeers = beers => {
@@ -27,6 +33,7 @@ const App = props => {
         <Searchbar
           updateCountrycode={updateCountrycode}
           updateBeers={updateBeers}
+          breweryNameSearch={breweryNameSearch}
         />
         <Switch>
           <Route exact path="/" component={Home} />

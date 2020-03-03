@@ -9,17 +9,64 @@ body {
 .searchbar {
   position: fixed;
   top: 0;
-  height: 40px;
+  height: 50px;
   width: 100%;
   border-bottom: 1px solid #181818;
   background-color: #d1d1d1;
   display: flex;
-  align-items: center;
   justify-content: center;
+}
+
+.searchelements {
+  display: flex;
+  width: 80%;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropbutton {
+  font-family: "Oswald";
+  background-color: white;
+  padding: 6px;
+  width: 200px;
+  font-size: 16px;
+  border: none;
+}
+
+.dropdowncontent {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 180px;
+  padding: 10px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
 }
 
 .contentcontainer {
   margin: 60px 40px 0px 40px;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdowncontent {
+  display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbutton {
+  background-color: #0e90f4;
+  color: white;
+}
+
+.listcontainer {
+  margin-top: 40px;
+  border-top: solid 1px #dfdfdf;
+  padding-top: 30px;
 }
 
 .spinnercontainer {
@@ -48,6 +95,14 @@ body {
   margin: 0;
 }
 
+.minortitle {
+  text-align: center;
+  font-family: "Oswald", sans-serif;
+  font-size: 2rem;
+  text-transform: uppercase;
+  margin: 0;
+}
+
 .established {
   font-size: 0.8rem;
   text-align: center;
@@ -61,10 +116,22 @@ body {
   text-align: center;
 }
 
-.beercard {
+.listitem {
   cursor: pointer;
 }
 
-.beercard:hover {
+.listitem:hover {
   color: #0e90f4;
+}
+
+.searchelement {
+  margin-bottom: 10px;
+}
+
+.searchbutton {
+  border: none;
+  background-color: #0e90f4;
+  color: white;
+  font-family: "OsWald";
+  margin-top: 1px;
 }

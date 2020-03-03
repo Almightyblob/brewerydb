@@ -44,28 +44,32 @@ const BreweryDetail = props => {
           <img src={brewery.images.medium} alt="logo" />
         </div>
         <p>{brewery.description}</p>
-        <h3>List of Beers</h3>
-        <div className="beerList">
-          {beers ? (
-            beers.map(beer => (
-              <div
-                className="beercard"
-                key={beer.id}
-                onClick={() => history.push(`/beer/${beer.id}`)}
-              >
-                <p>{beer.name}</p>
-              </div>
-            ))
-          ) : (
-            <p>loading list of beers</p>
-          )}
+        <div className="listcontainer">
+          <h1 className="minortitle">List of Beers</h1>
+          <div className="beerList">
+            {beers ? (
+              beers.map(beer => (
+                <div
+                  className="listitem"
+                  key={beer.id}
+                  onClick={() => history.push(`/beer/${beer.id}`)}
+                >
+                  <p>{beer.name}</p>
+                </div>
+              ))
+            ) : (
+              <p>loading list of beers</p>
+            )}
+          </div>
         </div>
       </div>
     );
   } else {
     return (
-      <div className="spinnercontainer">
-        <img src="/spinner.gif" alt="" />
+      <div className="contentcontainer">
+        <div className="spinnercontainer">
+          <img src="/spinner.gif" alt="" />
+        </div>
       </div>
     );
   }
