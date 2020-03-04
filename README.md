@@ -1,3 +1,5 @@
+(small update on 04.03.2020: edited landing page and fixed bug with brewery images)
+
 ## `BreweryDB sample project`
 
 In order to start, per usual first run "npm -i" to install all dependables and then run the app with "npm start".
