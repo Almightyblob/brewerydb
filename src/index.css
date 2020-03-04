@@ -80,6 +80,8 @@ body {
 .thickborder {
   border: 3px solid #181818;
   padding: 3px;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .beercontainer {
@@ -92,7 +94,6 @@ body {
   font-family: "Oswald", sans-serif;
   font-size: 3rem;
   text-transform: uppercase;
-  margin: 0;
 }
 
 .minortitle {

@@ -40,9 +40,15 @@ const BreweryDetail = props => {
         >
           <p>{brewery.website}</p>
         </a>
-        <div className="imgcontainer">
-          <img src={brewery.images.medium} alt="logo" />
-        </div>
+        {brewery.images ? (
+          <div className="imgcontainer">
+            <img src={brewery.images.medium} alt="logo" />
+          </div>
+        ) : (
+          <div className="imgcontainer">
+            <h4>(No image available)</h4>
+          </div>
+        )}
         <p>{brewery.description}</p>
         <div className="listcontainer">
           <h1 className="minortitle">List of Beers</h1>
